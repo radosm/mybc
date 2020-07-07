@@ -1,0 +1,28 @@
+#
+# Si el flag es -d lo arranca como daemon
+#
+if [ "$1" = "-d" ]; then
+  corriendo=$(docker inspect --format '{{.State.Running}}' calc.exe 2>/dev/null)
+  if [ "$corriendo" != "true" ]; then
+    docker run -id --rm --name calc.exe -p 1234:5000 --mount source=archivos,target=/archivos radosm/calculadora
+    exit
+  else
+    echo "error! ya está corriendo el container" >&2
+    exit 1
+  fi
+fi
+
+#
+# Arranca interactivo
+#
+if [ $# -ne 0 ]; then
+  #
+  # Si hay parámetros lo pasa por stdin al bc, no imprime bienvenida ni levanta port 5000
+  #
+  docker run --rm -i -e nomsg=1 -e nolisten=1 radosm/calculadora <<<"$*"
+else
+  #
+  # Sin parámetros queda esperando la entrada por stdin, no levanta port 5000
+  #
+  docker run --rm -i -e nolisten=1 radosm/calculadora
+fi
