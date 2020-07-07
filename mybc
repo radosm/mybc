@@ -4,7 +4,7 @@
 if [ "$1" = "-d" ]; then
   corriendo=$(docker inspect --format '{{.State.Running}}' calc.exe 2>/dev/null)
   if [ "$corriendo" != "true" ]; then
-    docker run -id --rm --name calc.exe -p 1234:5000 --mount source=archivos,target=/archivos radosm/calculadora
+    docker run -id --rm --name calc.exe -p 1234:5000 radosm/calculadora
     exit
   else
     echo "error! ya está corriendo el container" >&2
