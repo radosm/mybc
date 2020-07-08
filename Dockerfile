@@ -1,6 +1,7 @@
 FROM ubuntu
 MAINTAINER "Martin Rados"
-RUN apt-get update && apt-get install -y bc socat
+RUN apt-get update
+RUN apt-get install -y bc socat iproute2
 COPY run.sh /
 COPY runbc.sh /
 COPY readme.txt /
